@@ -86,8 +86,9 @@ function Home() {
 }
 
 export default function App() {
+  const base = import.meta.env.BASE_URL || '/';
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={base}>
       <div className="app-shell">
         <header className="topbar">
           <div className="brand">

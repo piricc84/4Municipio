@@ -1,10 +1,11 @@
 const CACHE_NAME = 'bari-loseto-v1';
+const BASE_URL = self.registration.scope;
+const OFFLINE_URL = `${BASE_URL}index.html`;
 const CORE_ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.webmanifest',
-  '/icons/app-icon.svg',
-  '/icons/maskable-icon.svg'
+  OFFLINE_URL,
+  `${BASE_URL}manifest.webmanifest`,
+  `${BASE_URL}icons/app-icon.svg`,
+  `${BASE_URL}icons/maskable-icon.svg`
 ];
 
 self.addEventListener('install', (event) => {
@@ -32,10 +33,10 @@ self.addEventListener('fetch', (event) => {
       fetch(request)
         .then((response) => {
           const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put('/', copy));
+          caches.open(CACHE_NAME).then((cache) => cache.put(OFFLINE_URL, copy));
           return response;
         })
-        .catch(() => caches.match('/'))
+        .catch(() => caches.match(OFFLINE_URL))
     );
     return;
   }

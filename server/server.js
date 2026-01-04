@@ -10,7 +10,8 @@ const { insertReport, listReports, updateReportStatus } = require('./db');
 const app = express();
 const PORT = process.env.PORT || 3001;
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
-const uploadsDir = path.join(__dirname, 'uploads');
+const dataDir = path.join(__dirname, 'data');
+const uploadsDir = path.join(dataDir, 'uploads');
 
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });

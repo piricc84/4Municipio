@@ -1,19 +1,20 @@
 {
   "name": "Segnalazioni Bari Loseto",
   "short_name": "Segnalazioni",
-  "start_url": "/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#f4f1ea",
   "theme_color": "#0d1b2a",
   "description": "Portale PWA per segnalazioni civiche del Municipio Bari - Loseto.",
   "icons": [
     {
-      "src": "/icons/app-icon.svg",
+      "src": "./icons/app-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml"
     },
     {
-      "src": "/icons/maskable-icon.svg",
+      "src": "./icons/maskable-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "maskable"

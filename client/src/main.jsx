@@ -12,6 +12,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
+    const swUrl = `${import.meta.env.BASE_URL}sw.js`;
+    navigator.serviceWorker.register(swUrl).catch(() => {});
   });
 }

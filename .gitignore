@@ -8,5 +8,5 @@ server/dist/
 .DS_Store
 Thumbs.db
 server/data/*.sqlite
-server/uploads/*
-!server/uploads/.gitkeep
+server/data/uploads/*
+!server/data/uploads/.gitkeep

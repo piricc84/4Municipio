@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: bari-loseto-segnalazioni-api
+    env: node
+    rootDir: server
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: CLIENT_ORIGIN
+        value: https://piricc84.github.io/4Municipio
+    disk:
+      name: bari-loseto-data
+      mountPath: /opt/render/project/src/server/data
+      sizeGB: 1

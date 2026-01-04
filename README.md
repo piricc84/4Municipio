@@ -39,6 +39,7 @@ diretta.
 
 ## Database
 SQLite: server/data/reports.sqlite
+Upload foto: server/data/uploads
 
 ## Build produzione
 1) Client
@@ -50,6 +51,24 @@ SQLite: server/data/reports.sqlite
    npm start
 
 Il server serve client/dist se presente.
+
+## Deploy (GitHub Pages + Render)
+GitHub Pages ospita solo il frontend. Il backend gira su Render, entrambi
+partono dallo stesso repo Git.
+
+### Render (backend)
+1) Vai su Render e scegli "New + > Blueprint".
+2) Seleziona il repo GitHub e conferma.
+3) Render legge `render.yaml` e crea il servizio.
+4) Prendi l'URL pubblico del servizio, es. `https://bari-loseto-api.onrender.com`.
+
+### GitHub Pages (frontend)
+1) In GitHub: Settings > Pages > Build and deployment > GitHub Actions.
+2) Imposta la variabile `VITE_API_URL` in Settings > Secrets and variables > Actions.
+   Valore: l'URL del backend Render.
+3) Esegui un nuovo push o rilancia il workflow.
+
+URL atteso della pagina: `https://piricc84.github.io/4Municipio/`
 
 ## Roadmap breve
 - Aggiungere autenticazione consigliere
