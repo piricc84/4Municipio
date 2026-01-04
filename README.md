@@ -31,6 +31,7 @@ Apri http://localhost:5173
 ## Configurazione
 - API base url: VITE_API_URL (default http://localhost:3001)
 - Origine client per CORS: CLIENT_ORIGIN (default http://localhost:5173)
+- Dashboard: ADMIN_USER / ADMIN_PASS (default consigliere / BariLoseto2025!)
 
 ## Note WhatsApp
 Se il numero non e compilato, il link apre WhatsApp e ti fa scegliere il
@@ -61,6 +62,7 @@ partono dallo stesso repo Git.
 2) Seleziona il repo GitHub e conferma.
 3) Render legge `render.yaml` e crea il servizio.
 4) Prendi l'URL pubblico del servizio, es. `https://bari-loseto-api.onrender.com`.
+5) (Consigliato) Cambia ADMIN_USER e ADMIN_PASS nelle variabili di ambiente Render.
 
 ### GitHub Pages (frontend)
 1) In GitHub: Settings > Pages > Build and deployment > GitHub Actions.

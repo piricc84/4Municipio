@@ -8,8 +8,11 @@ const crypto = require('crypto');
 const { insertReport, listReports, updateReportStatus } = require('./db');
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3001;
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
+const ADMIN_USER = process.env.ADMIN_USER || 'consigliere';
+const ADMIN_PASS = process.env.ADMIN_PASS || 'BariLoseto2025!';
 const dataDir = path.join(__dirname, 'data');
 const uploadsDir = path.join(dataDir, 'uploads');
 
@@ -37,7 +40,19 @@ const upload = multer({
   },
 });
 
-app.use(cors({ origin: CLIENT_ORIGIN }));
+const corsOrigins = CLIENT_ORIGIN.split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (corsOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error('Not allowed by CORS'));
+    },
+  })
+);
 app.use(express.json({ limit: '2mb' }));
 app.use(morgan('dev'));
 app.use('/uploads', express.static(uploadsDir));
@@ -45,6 +60,23 @@ app.use('/uploads', express.static(uploadsDir));
 app.get('/api/health', (req, res) => {
   res.json({ ok: true });
 });
+
+const parseBasicAuth = (header) => {
+  if (!header || !header.startsWith('Basic ')) return null;
+  const decoded = Buffer.from(header.slice(6), 'base64').toString('utf-8');
+  const index = decoded.indexOf(':');
+  if (index === -1) return null;
+  return { user: decoded.slice(0, index), pass: decoded.slice(index + 1) };
+};
+
+const requireAdmin = (req, res, next) => {
+  const creds = parseBasicAuth(req.headers.authorization);
+  if (!creds || creds.user !== ADMIN_USER || creds.pass !== ADMIN_PASS) {
+    res.set('WWW-Authenticate', 'Basic realm="Admin"');
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  return next();
+};
 
 const attachReportId = (req, res, next) => {
   req.reportId = crypto.randomUUID();
@@ -87,7 +119,7 @@ app.post('/api/reports', attachReportId, upload.single('photo'), (req, res) => {
   });
 });
 
-app.get('/api/reports', (req, res) => {
+app.get('/api/reports', requireAdmin, (req, res) => {
   const { status, category, q, limit, offset } = req.query;
   const reports = listReports({
     status,
@@ -106,7 +138,7 @@ app.get('/api/reports', (req, res) => {
 
 const allowedStatuses = new Set(['nuova', 'in_lavorazione', 'chiusa']);
 
-app.patch('/api/reports/:id/status', (req, res) => {
+app.patch('/api/reports/:id/status', requireAdmin, (req, res) => {
   const { status } = req.body;
   if (!allowedStatuses.has(status)) {
     return res.status(400).json({ error: 'invalid status' });

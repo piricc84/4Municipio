@@ -423,6 +423,18 @@ textarea {
   gap: 20px;
 }
 
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dashboard-header h2 {
+  margin: 0;
+}
+
 .filter-bar {
   display: grid;
   gap: 12px;

@@ -8,7 +8,11 @@ services:
     startCommand: node server.js
     envVars:
       - key: CLIENT_ORIGIN
-        value: https://piricc84.github.io/4Municipio
+        value: https://piricc84.github.io
+      - key: ADMIN_USER
+        value: consigliere
+      - key: ADMIN_PASS
+        value: BariLoseto2025!
     disk:
       name: bari-loseto-data
       mountPath: /opt/render/project/src/server/data

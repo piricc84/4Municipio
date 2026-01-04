@@ -15,8 +15,8 @@ function Home() {
             e descrizione arrivano al consigliere con un messaggio WhatsApp pronto.
           </p>
           <div className="hero-actions">
-            <a className="button primary" href="#segnala">Segnala ora</a>
-            <a className="button ghost" href="#come-funziona">Come funziona</a>
+            <a className="button primary" href={`${import.meta.env.BASE_URL}#segnala`}>Segnala ora</a>
+            <a className="button ghost" href={`${import.meta.env.BASE_URL}#come-funziona`}>Come funziona</a>
           </div>
           <div className="hero-metrics">
             <div className="metric">
@@ -87,6 +87,7 @@ function Home() {
 
 export default function App() {
   const base = import.meta.env.BASE_URL || '/';
+  const homeAnchor = `${base}#segnala`;
   return (
     <BrowserRouter basename={base}>
       <div className="app-shell">
@@ -102,7 +103,7 @@ export default function App() {
             <NavLink to="/" end>Segnala</NavLink>
             <NavLink to="/dashboard">Dashboard</NavLink>
           </nav>
-          <a className="cta" href="#segnala">Invia segnalazione</a>
+          <a className="cta" href={homeAnchor}>Invia segnalazione</a>
         </header>
         <main>
           <Routes>
