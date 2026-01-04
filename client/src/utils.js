@@ -12,24 +12,25 @@ export function statusLabel(value) {
 
 export function buildWhatsappMessage(report, categoryId) {
   const label = categoryLabel(categoryId || report.category);
+  const addressValue = report.address ? report.address : 'Non indicato';
+  const coordsAvailable = Number.isFinite(report.lat) && Number.isFinite(report.lng);
+  const coordsValue = coordsAvailable
+    ? `${report.lat.toFixed(6)}, ${report.lng.toFixed(6)}`
+    : 'Non indicata';
+  const mapLink = coordsAvailable ? toOsmLink(report.lat, report.lng) : 'Non disponibile';
+  const photoValue = report.photoUrl ? report.photoUrl : 'Non presente';
   const lines = [
     'Segnalazione Municipio Bari Loseto',
     `ID: ${report.id}`,
     `Categoria: ${label}`,
-    `Descrizione: ${report.description}`,
+    `Cosa succede: ${report.description}`,
+    `Dove (indirizzo/riferimento): ${addressValue}`,
+    `Coordinate GPS: ${coordsValue}`,
+    `Mappa: ${mapLink}`,
+    `Foto: ${photoValue}`,
+    'Richiesta: verifica e intervento.',
+    'Segnalante: cittadino anonimo.',
   ];
-
-  if (report.address) {
-    lines.push(`Indirizzo: ${report.address}`);
-  }
-
-  if (Number.isFinite(report.lat) && Number.isFinite(report.lng)) {
-    lines.push(`Coordinate: ${report.lat.toFixed(6)}, ${report.lng.toFixed(6)}`);
-  }
-
-  if (report.photoUrl) {
-    lines.push(`Foto: ${report.photoUrl}`);
-  }
 
   const dateValue = report.created_at || report.createdAt || new Date().toISOString();
   lines.push(`Data: ${new Date(dateValue).toLocaleString('it-IT')}`);

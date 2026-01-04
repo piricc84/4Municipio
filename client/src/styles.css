@@ -1,16 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Spectral:wght@400;600&display=swap');
 
 :root {
-  --bg: #f4f1ea;
-  --ink: #1b1a16;
-  --muted: #5d564c;
-  --accent: #d9653b;
-  --accent-2: #1f4e5f;
-  --accent-3: #0d1b2a;
-  --surface: #fff7ef;
+  --bg: #f3efe6;
+  --ink: #161616;
+  --muted: #5b564e;
+  --accent: #c3562d;
+  --accent-2: #0f5e72;
+  --accent-3: #0b2236;
+  --surface: #fff8ef;
   --surface-2: #ffffff;
-  --line: rgba(13, 27, 42, 0.12);
-  --shadow: 0 18px 40px rgba(13, 27, 42, 0.15);
+  --line: rgba(11, 34, 54, 0.12);
+  --shadow: 0 24px 60px rgba(11, 34, 54, 0.18);
+  --shadow-soft: 0 10px 20px rgba(11, 34, 54, 0.08);
   --radius: 20px;
   --radius-sm: 12px;
 }
@@ -22,7 +23,7 @@
 body {
   margin: 0;
   font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-  background: var(--bg);
+  background: linear-gradient(180deg, #f7f2e9 0%, var(--bg) 100%);
   color: var(--ink);
   min-height: 100vh;
 }
@@ -32,9 +33,9 @@ body::before {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 20%, rgba(217, 101, 59, 0.18), transparent 55%),
-    radial-gradient(circle at 85% 10%, rgba(31, 78, 95, 0.2), transparent 45%),
-    radial-gradient(circle at 12% 80%, rgba(13, 27, 42, 0.12), transparent 50%);
+    radial-gradient(circle at 20% 20%, rgba(195, 86, 45, 0.18), transparent 55%),
+    radial-gradient(circle at 85% 10%, rgba(15, 94, 114, 0.2), transparent 45%),
+    radial-gradient(circle at 12% 80%, rgba(11, 34, 54, 0.12), transparent 50%);
   z-index: -1;
 }
 
@@ -57,7 +58,8 @@ a {
   padding: 16px 20px;
   background: var(--surface-2);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  border: 1px solid rgba(11, 34, 54, 0.08);
+  box-shadow: var(--shadow-soft);
   position: sticky;
   top: 16px;
   z-index: 10;
@@ -73,7 +75,7 @@ a {
   width: 44px;
   height: 44px;
   border-radius: 14px;
-  background: linear-gradient(135deg, var(--accent-3), #274c77);
+  background: linear-gradient(135deg, var(--accent-3), #1a3a57);
   color: #fff;
   display: flex;
   align-items: center;
@@ -112,9 +114,10 @@ a {
 .cta {
   padding: 10px 16px;
   border-radius: 999px;
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent-3), var(--accent-2));
   color: #fff;
   font-weight: 600;
+  box-shadow: var(--shadow-soft);
 }
 
 .hero {
@@ -126,9 +129,10 @@ a {
 
 .hero-text {
   padding: 24px;
-  background: var(--surface-2);
+  background: linear-gradient(180deg, #ffffff 0%, #fff8ef 100%);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+  border: 1px solid rgba(11, 34, 54, 0.08);
 }
 
 .eyebrow {
@@ -140,7 +144,7 @@ a {
 
 .hero h1 {
   font-family: 'Spectral', serif;
-  font-size: 2.5rem;
+  font-size: 2.4rem;
   margin: 12px 0;
 }
 
@@ -164,16 +168,23 @@ a {
   background: var(--surface-2);
   font-weight: 600;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
 }
 
 .button.primary {
   background: var(--accent-3);
   color: #fff;
   border-color: transparent;
+  box-shadow: var(--shadow-soft);
 }
 
 .button.ghost {
   background: transparent;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-soft);
 }
 
 .hero-metrics {
@@ -198,9 +209,10 @@ a {
 
 .hero-card {
   padding: 24px;
-  background: linear-gradient(135deg, #fff, #f4ede1);
+  background: linear-gradient(135deg, #ffffff, #f2ede4);
   border-radius: var(--radius);
-  border: 1px solid var(--line);
+  border: 1px solid rgba(11, 34, 54, 0.12);
+  box-shadow: var(--shadow-soft);
 }
 
 .section {
@@ -232,7 +244,7 @@ a {
   gap: 12px;
   align-items: center;
   cursor: pointer;
-  transition: transform 0.2s ease, border 0.2s ease;
+  transition: transform 0.2s ease, border 0.2s ease, box-shadow 0.2s ease;
 }
 
 .category-card:hover {
@@ -246,7 +258,8 @@ a {
 
 .category-card.active {
   border-color: var(--accent-3);
-  box-shadow: 0 10px 20px rgba(13, 27, 42, 0.12);
+  box-shadow: var(--shadow-soft);
+  background: #fdf6ef;
 }
 
 .category-chip {
@@ -270,6 +283,7 @@ a {
   border-radius: var(--radius);
   padding: 24px;
   box-shadow: var(--shadow);
+  border: 1px solid rgba(11, 34, 54, 0.08);
 }
 
 .report-form {
@@ -300,9 +314,19 @@ select {
   font-size: 1rem;
 }
 
+input[type='text']:focus,
+input[type='tel']:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid rgba(15, 94, 114, 0.25);
+  border-color: rgba(15, 94, 114, 0.6);
+  box-shadow: 0 0 0 3px rgba(15, 94, 114, 0.12);
+}
+
 textarea {
   min-height: 110px;
   resize: vertical;
+  line-height: 1.5;
 }
 
 .helper {
@@ -321,7 +345,7 @@ textarea {
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--line);
-  background: #fdfbf7;
+  background: #fdf8f1;
 }
 
 .map {
@@ -359,8 +383,8 @@ textarea {
   margin-top: 20px;
   padding: 18px;
   border-radius: 16px;
-  background: rgba(31, 78, 95, 0.08);
-  border: 1px solid rgba(31, 78, 95, 0.2);
+  background: rgba(15, 94, 114, 0.08);
+  border: 1px solid rgba(15, 94, 114, 0.2);
   display: grid;
   gap: 12px;
 }
@@ -380,6 +404,7 @@ textarea {
   padding: 18px;
   border-radius: 16px;
   border: 1px solid var(--line);
+  box-shadow: var(--shadow-soft);
 }
 
 .info-card h3 {
@@ -405,7 +430,8 @@ textarea {
   background: var(--surface-2);
   padding: 16px;
   border-radius: 16px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(11, 34, 54, 0.08);
+  box-shadow: var(--shadow-soft);
 }
 
 .report-list {
@@ -420,6 +446,7 @@ textarea {
   border: 1px solid var(--line);
   display: grid;
   gap: 10px;
+  box-shadow: var(--shadow-soft);
 }
 
 .report-head {
@@ -432,14 +459,14 @@ textarea {
 .badge {
   padding: 4px 10px;
   border-radius: 999px;
-  background: rgba(217, 101, 59, 0.14);
+  background: rgba(195, 86, 45, 0.16);
   font-weight: 600;
 }
 
 .status-badge {
   padding: 4px 10px;
   border-radius: 999px;
-  background: rgba(13, 27, 42, 0.08);
+  background: rgba(11, 34, 54, 0.08);
   font-weight: 600;
 }
 
@@ -455,12 +482,18 @@ textarea {
   border: 1px solid var(--line);
   background: #fff;
   cursor: pointer;
+  transition: background 0.2s ease, border 0.2s ease;
 }
 
 .status-actions button.active {
   background: var(--accent-3);
   color: #fff;
   border-color: transparent;
+}
+
+.status-actions button:hover {
+  border-color: rgba(11, 34, 54, 0.3);
+  background: rgba(11, 34, 54, 0.04);
 }
 
 .report-links {

@@ -9,10 +9,10 @@ function Home() {
       <section className="hero">
         <div className="hero-text">
           <p className="eyebrow">Municipio Bari - Loseto</p>
-          <h1>Segnala in pochi secondi i problemi piu urgenti del quartiere.</h1>
+          <h1>Portale ufficiale per le segnalazioni civiche del quartiere.</h1>
           <p className="lead">
-            Un portale semplice, rapido e pensato per smartphone: foto, posizione
-            e descrizione arrivano al consigliere con un messaggio WhatsApp gia pronto.
+            Un servizio rapido, affidabile e pensato per smartphone: foto, posizione
+            e descrizione arrivano al consigliere con un messaggio WhatsApp pronto.
           </p>
           <div className="hero-actions">
             <a className="button primary" href="#segnala">Segnala ora</a>
@@ -34,22 +34,22 @@ function Home() {
           </div>
         </div>
         <div className="hero-card">
-          <h3>Perche funziona</h3>
+          <h3>Gestione trasparente</h3>
           <p className="muted">
-            Ogni segnalazione e salvata e condivisa con un testo chiaro, completo e
-            pronto per il canale piu veloce: WhatsApp.
+            Ogni segnalazione e salvata con un testo standard e condivisa con il
+            canale piu rapido: WhatsApp.
           </p>
           <ul className="muted">
-            <li>Segnalazione salvata con foto e coordinate</li>
-            <li>Messaggio precompilato e condivisibile</li>
-            <li>Dashboard per gestire lo stato</li>
+            <li>Foto, coordinate e indirizzo archiviati</li>
+            <li>Testo guidato e completo per l'invio</li>
+            <li>Dashboard con stati e filtri operativi</li>
           </ul>
         </div>
       </section>
 
       <section className="section" id="categorie">
         <h2>Categorie principali</h2>
-        <p className="muted">Seleziona la tipologia piu adatta.</p>
+        <p className="muted">Seleziona la tipologia piu adatta alla segnalazione.</p>
         <div className="category-grid">
           {CATEGORIES.map((category) => (
             <div className="category-card" key={category.id}>
@@ -77,7 +77,7 @@ function Home() {
           </div>
           <div className="info-card">
             <h3>3. Invia</h3>
-            <p className="muted">Apri WhatsApp e invia il testo precompilato.</p>
+            <p className="muted">Apri WhatsApp e invia il testo standard.</p>
           </div>
         </div>
       </section>

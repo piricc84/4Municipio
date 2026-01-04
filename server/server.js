@@ -59,14 +59,20 @@ app.post('/api/reports', attachReportId, upload.single('photo'), (req, res) => {
 
   const parsedLat = Number.parseFloat(lat);
   const parsedLng = Number.parseFloat(lng);
+  if (!Number.isFinite(parsedLat) || !Number.isFinite(parsedLng)) {
+    return res.status(400).json({ error: 'lat and lng are required' });
+  }
+  if (String(description).trim().length < 10) {
+    return res.status(400).json({ error: 'description must be at least 10 characters' });
+  }
 
   const report = {
     id: req.reportId,
     category: String(category).trim(),
     description: String(description).trim(),
     address: address ? String(address).trim() : '',
-    lat: Number.isFinite(parsedLat) ? parsedLat : null,
-    lng: Number.isFinite(parsedLng) ? parsedLng : null,
+    lat: parsedLat,
+    lng: parsedLng,
     photo_path: req.file ? `/uploads/${req.file.filename}` : '',
     status: 'nuova',
     created_at: new Date().toISOString(),

@@ -21,7 +21,11 @@ export default function ReportForm() {
   const [success, setSuccess] = useState(null);
   const [copied, setCopied] = useState(false);
 
-  const canSubmit = form.category && form.description.trim().length >= 10;
+  const canSubmit =
+    form.category &&
+    form.description.trim().length >= 10 &&
+    Number.isFinite(form.lat) &&
+    Number.isFinite(form.lng);
 
   const handleField = (field) => (event) => {
     setForm((prev) => ({ ...prev, [field]: event.target.value }));
@@ -32,8 +36,13 @@ export default function ReportForm() {
     setError('');
     setCopied(false);
 
-    if (!canSubmit) {
+    if (!form.category || form.description.trim().length < 10) {
       setError('Inserisci categoria e una descrizione di almeno 10 caratteri.');
+      return;
+    }
+
+    if (!Number.isFinite(form.lat) || !Number.isFinite(form.lng)) {
+      setError('Seleziona il punto sulla mappa oppure usa la geolocalizzazione.');
       return;
     }
 
@@ -113,7 +122,10 @@ export default function ReportForm() {
           <textarea
             id="description"
             name="description"
-            placeholder="Descrivi il problema e indica dettagli utili."
+            placeholder={
+              'Descrivi cosa succede, da quanto tempo e rischi. ' +
+              'Es: rifiuti su marciapiede da 3 giorni, passaggio difficile.'
+            }
             value={form.description}
             onChange={handleField('description')}
           />
@@ -127,7 +139,7 @@ export default function ReportForm() {
               id="address"
               type="text"
               name="address"
-              placeholder="Es. Via Roma, angolo via ..."
+              placeholder="Es. Via Roma, angolo via ..., vicino a ..."
               value={form.address}
               onChange={handleField('address')}
             />
@@ -167,6 +179,7 @@ export default function ReportForm() {
               onChange={(event) => setPhoto(event.target.files?.[0] || null)}
             />
           </div>
+          <span className="helper">Consigliata per rendere la segnalazione piu efficace.</span>
         </div>
 
         {error && <div className="error">{error}</div>}
@@ -184,7 +197,7 @@ export default function ReportForm() {
       {success && (
         <div className="success-panel">
           <h3>Segnalazione salvata</h3>
-          <p className="helper">Apri WhatsApp e invia il testo precompilato.</p>
+          <p className="helper">Apri WhatsApp e invia il testo standard guidato.</p>
           <textarea readOnly value={success.message} />
           <div className="submit-row">
             <a className="button primary" href={success.url} target="_blank" rel="noreferrer">
