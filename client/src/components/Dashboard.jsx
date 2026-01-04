@@ -141,9 +141,12 @@ export default function Dashboard() {
     <div className="section dashboard">
       <div className="dashboard-header">
         <h2>Dashboard consigliere</h2>
-        <button type="button" className="button ghost" onClick={handleLogout}>
-          Esci
-        </button>
+        <div className="dashboard-actions">
+          <span className="helper">Accesso: {login.user || 'admin'}</span>
+          <button type="button" className="button ghost" onClick={handleLogout}>
+            Esci
+          </button>
+        </div>
       </div>
       <p className="muted">Gestisci le segnalazioni ricevute e aggiorna lo stato.</p>
 

@@ -435,6 +435,13 @@ textarea {
   margin: 0;
 }
 
+.dashboard-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .filter-bar {
   display: grid;
   gap: 12px;
