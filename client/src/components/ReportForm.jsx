@@ -1,20 +1,27 @@
 import { useState } from 'react';
-import { CATEGORIES } from '../constants.js';
-import { buildWhatsappMessage, buildWhatsappUrl, categoryLabel } from '../utils.js';
+import { CATEGORIES, CATEGORY_HINTS, ISSUE_PLACEHOLDERS } from '../constants.js';
+import { buildGuidedDescription, buildWhatsappMessage, buildWhatsappUrl, categoryLabel } from '../utils.js';
 import { createReport } from '../api.js';
 import MapPicker from './MapPicker.jsx';
 
 const initialState = {
   category: CATEGORIES[0].id,
-  description: '',
   address: '',
   whatsapp: '',
   lat: null,
   lng: null,
 };
 
+const initialFields = {
+  issue: '',
+  timeframe: '',
+  impact: '',
+  details: '',
+};
+
 export default function ReportForm() {
   const [form, setForm] = useState(initialState);
+  const [fields, setFields] = useState(initialFields);
   const [photo, setPhoto] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -23,7 +30,9 @@ export default function ReportForm() {
 
   const canSubmit =
     form.category &&
-    form.description.trim().length >= 10 &&
+    fields.issue.trim().length >= 5 &&
+    fields.timeframe.trim().length >= 3 &&
+    fields.impact.trim().length >= 3 &&
     Number.isFinite(form.lat) &&
     Number.isFinite(form.lng);
 
@@ -31,13 +40,28 @@ export default function ReportForm() {
     setForm((prev) => ({ ...prev, [field]: event.target.value }));
   };
 
+  const handleGuidedField = (field) => (event) => {
+    setFields((prev) => ({ ...prev, [field]: event.target.value }));
+  };
+
+  const handleCategoryChange = (value) => {
+    setForm((prev) => ({ ...prev, category: value }));
+    setFields(initialFields);
+    setError('');
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
     setCopied(false);
 
-    if (!form.category || form.description.trim().length < 10) {
-      setError('Inserisci categoria e una descrizione di almeno 10 caratteri.');
+    if (!form.category) {
+      setError('Seleziona una categoria.');
+      return;
+    }
+
+    if (fields.issue.trim().length < 5 || fields.timeframe.trim().length < 3 || fields.impact.trim().length < 3) {
+      setError('Completa i campi obbligatori del testo guidato.');
       return;
     }
 
@@ -46,9 +70,16 @@ export default function ReportForm() {
       return;
     }
 
+    const description = buildGuidedDescription(form.category, {
+      issue: fields.issue.trim(),
+      timeframe: fields.timeframe.trim(),
+      impact: fields.impact.trim(),
+      details: fields.details.trim(),
+    });
+
     const data = new FormData();
     data.append('category', form.category);
-    data.append('description', form.description.trim());
+    data.append('description', description);
     data.append('address', form.address.trim());
     if (Number.isFinite(form.lat)) data.append('lat', String(form.lat));
     if (Number.isFinite(form.lng)) data.append('lng', String(form.lng));
@@ -69,6 +100,7 @@ export default function ReportForm() {
 
   const handleReset = () => {
     setForm(initialState);
+    setFields(initialFields);
     setPhoto(null);
     setSuccess(null);
     setError('');
@@ -87,6 +119,14 @@ export default function ReportForm() {
   };
 
   const selectedCategory = categoryLabel(form.category);
+  const categoryHint = CATEGORY_HINTS[form.category];
+  const issuePlaceholder = ISSUE_PLACEHOLDERS[form.category] || ISSUE_PLACEHOLDERS.altro;
+  const guidedDescription = buildGuidedDescription(form.category, {
+    issue: fields.issue || '...',
+    timeframe: fields.timeframe || '...',
+    impact: fields.impact || '...',
+    details: fields.details || '',
+  });
 
   return (
     <div className="report-card">
@@ -108,28 +148,60 @@ export default function ReportForm() {
                   name="category"
                   value={category.id}
                   checked={form.category === category.id}
-                  onChange={handleField('category')}
+                  onChange={() => handleCategoryChange(category.id)}
                 />
                 <div className="category-chip">{category.short}</div>
                 <div className="category-text">{category.label}</div>
               </label>
             ))}
           </div>
+          {categoryHint && <span className="helper">{categoryHint}</span>}
         </div>
 
         <div className="form-row">
-          <label htmlFor="description">Descrizione</label>
-          <textarea
-            id="description"
-            name="description"
-            placeholder={
-              'Descrivi cosa succede, da quanto tempo e rischi. ' +
-              'Es: rifiuti su marciapiede da 3 giorni, passaggio difficile.'
-            }
-            value={form.description}
-            onChange={handleField('description')}
-          />
-          <span className="helper">Minimo 10 caratteri. Categoria scelta: {selectedCategory}.</span>
+          <label>Testo guidato (compilazione assistita)</label>
+          <div className="guided-grid">
+            <div className="form-row">
+              <label htmlFor="issue">Cosa succede</label>
+              <input
+                id="issue"
+                type="text"
+                placeholder={issuePlaceholder}
+                value={fields.issue}
+                onChange={handleGuidedField('issue')}
+              />
+            </div>
+            <div className="form-row">
+              <label htmlFor="timeframe">Da quanto tempo</label>
+              <input
+                id="timeframe"
+                type="text"
+                placeholder="Es. da ieri, da 2 settimane"
+                value={fields.timeframe}
+                onChange={handleGuidedField('timeframe')}
+              />
+            </div>
+            <div className="form-row">
+              <label htmlFor="impact">Rischi o impatto</label>
+              <input
+                id="impact"
+                type="text"
+                placeholder="Es. pericolo per pedoni, traffico rallentato"
+                value={fields.impact}
+                onChange={handleGuidedField('impact')}
+              />
+            </div>
+            <div className="form-row">
+              <label htmlFor="details">Dettagli aggiuntivi (opzionale)</label>
+              <textarea
+                id="details"
+                placeholder="Info utili aggiuntive"
+                value={fields.details}
+                onChange={handleGuidedField('details')}
+              />
+            </div>
+          </div>
+          <span className="helper">Categoria scelta: {selectedCategory}. Campi con testo guidato obbligatori.</span>
         </div>
 
         <div className="form-row split">
@@ -180,6 +252,12 @@ export default function ReportForm() {
             />
           </div>
           <span className="helper">Consigliata per rendere la segnalazione piu efficace.</span>
+        </div>
+
+        <div className="form-row">
+          <label>Anteprima testo WhatsApp</label>
+          <textarea readOnly value={guidedDescription} />
+          <span className="helper">Il testo viene generato automaticamente in base ai campi compilati.</span>
         </div>
 
         {error && <div className="error">{error}</div>}

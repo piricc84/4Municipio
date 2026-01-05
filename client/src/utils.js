@@ -38,6 +38,22 @@ export function buildWhatsappMessage(report, categoryId) {
   return lines.join('\n');
 }
 
+export function buildGuidedDescription(categoryId, fields) {
+  const label = categoryLabel(categoryId);
+  const lines = [
+    `Segnalazione: ${label}.`,
+    `Problema: ${fields.issue}.`,
+    `Da quanto tempo: ${fields.timeframe}.`,
+    `Rischi/Impatto: ${fields.impact}.`,
+  ];
+
+  if (fields.details) {
+    lines.push(`Dettagli aggiuntivi: ${fields.details}.`);
+  }
+
+  return lines.join(' ');
+}
+
 export function buildWhatsappUrl({ phone, text }) {
   const cleaned = phone ? phone.replace(/[^\d]/g, '') : '';
   const encoded = encodeURIComponent(text);

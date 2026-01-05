@@ -6,7 +6,7 @@ import { CATEGORIES } from './constants.js';
 function Home() {
   return (
     <div className="home">
-      <section className="hero">
+      <section className="hero" id="portale">
         <div className="hero-text">
           <p className="eyebrow">Municipio Bari - Loseto</p>
           <h1>Portale ufficiale per le segnalazioni civiche del quartiere.</h1>
@@ -17,20 +17,6 @@ function Home() {
           <div className="hero-actions">
             <a className="button primary" href={`${import.meta.env.BASE_URL}#segnala`}>Segnala ora</a>
             <a className="button ghost" href={`${import.meta.env.BASE_URL}#come-funziona`}>Come funziona</a>
-          </div>
-          <div className="hero-metrics">
-            <div className="metric">
-              <span className="metric-value">PWA</span>
-              <span className="metric-label">Installabile</span>
-            </div>
-            <div className="metric">
-              <span className="metric-value">Geo</span>
-              <span className="metric-label">Posizione precisa</span>
-            </div>
-            <div className="metric">
-              <span className="metric-value">WhatsApp</span>
-              <span className="metric-label">Click to chat</span>
-            </div>
           </div>
         </div>
         <div className="hero-card">
@@ -87,7 +73,10 @@ function Home() {
 
 export default function App() {
   const base = import.meta.env.BASE_URL || '/';
+  const portalAnchor = `${base}#portale`;
   const homeAnchor = `${base}#segnala`;
+  const categoriesAnchor = `${base}#categorie`;
+  const guideAnchor = `${base}#come-funziona`;
   return (
     <BrowserRouter basename={base}>
       <div className="app-shell">
@@ -100,7 +89,10 @@ export default function App() {
             </div>
           </div>
           <nav className="nav">
-            <NavLink to="/" end>Segnala</NavLink>
+            <a href={portalAnchor}>Portale</a>
+            <a href={categoriesAnchor}>Categorie</a>
+            <a href={homeAnchor}>Segnala</a>
+            <a href={guideAnchor}>Come funziona</a>
             <NavLink to="/dashboard">Dashboard</NavLink>
           </nav>
           <a className="cta" href={homeAnchor}>Invia segnalazione</a>

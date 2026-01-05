@@ -38,7 +38,7 @@ body::before {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.28;
+  opacity: 0.6;
   filter: saturate(0.9) contrast(1.05);
   z-index: -2;
   pointer-events: none;
@@ -49,7 +49,7 @@ body::after {
   position: fixed;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(247, 242, 233, 0.9) 0%, rgba(243, 239, 230, 0.92) 100%),
+    linear-gradient(180deg, rgba(247, 242, 233, 0.68) 0%, rgba(243, 239, 230, 0.72) 100%),
     radial-gradient(circle at 20% 20%, rgba(195, 86, 45, 0.18), transparent 55%),
     radial-gradient(circle at 85% 10%, rgba(15, 94, 114, 0.2), transparent 45%),
     radial-gradient(circle at 12% 80%, rgba(11, 34, 54, 0.12), transparent 50%);
@@ -118,6 +118,7 @@ a {
   display: flex;
   gap: 16px;
   font-weight: 500;
+  flex-wrap: wrap;
 }
 
 .nav a {
@@ -127,6 +128,10 @@ a {
 
 .nav a.active {
   background: rgba(13, 27, 42, 0.08);
+}
+
+.nav a:hover {
+  background: rgba(11, 34, 54, 0.08);
 }
 
 .cta {
@@ -307,6 +312,11 @@ a {
 .report-form {
   display: grid;
   gap: 16px;
+}
+
+.guided-grid {
+  display: grid;
+  gap: 12px;
 }
 
 .form-row {
