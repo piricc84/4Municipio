@@ -29,6 +29,7 @@ export default function ReportForm() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [touched, setTouched] = useState({});
 
   const canSubmit =
     form.category &&
@@ -40,16 +41,19 @@ export default function ReportForm() {
 
   const handleField = (field) => (event) => {
     setForm((prev) => ({ ...prev, [field]: event.target.value }));
+    setTouched((prev) => ({ ...prev, [field]: true }));
   };
 
   const handleGuidedField = (field) => (event) => {
     setFields((prev) => ({ ...prev, [field]: event.target.value }));
+    setTouched((prev) => ({ ...prev, [field]: true }));
   };
 
   const handleCategoryChange = (value) => {
     setForm((prev) => ({ ...prev, category: value }));
     setFields(initialFields);
     setError('');
+    setTouched((prev) => ({ ...prev, category: true }));
   };
 
   const handleSubmit = async (event) => {
@@ -57,18 +61,16 @@ export default function ReportForm() {
     setError('');
     setCopied(false);
 
-    if (!form.category) {
-      setError('Seleziona una categoria.');
-      return;
-    }
+    const missing = {};
+    if (!form.category) missing.category = true;
+    if (fields.issue.trim().length < 5) missing.issue = true;
+    if (fields.timeframe.trim().length < 3) missing.timeframe = true;
+    if (fields.impact.trim().length < 3) missing.impact = true;
+    if (!Number.isFinite(form.lat) || !Number.isFinite(form.lng)) missing.location = true;
 
-    if (fields.issue.trim().length < 5 || fields.timeframe.trim().length < 3 || fields.impact.trim().length < 3) {
-      setError('Completa i campi obbligatori del testo guidato.');
-      return;
-    }
-
-    if (!Number.isFinite(form.lat) || !Number.isFinite(form.lng)) {
-      setError('Seleziona il punto sulla mappa oppure usa la geolocalizzazione.');
+    if (Object.keys(missing).length > 0) {
+      setTouched((prev) => ({ ...prev, ...missing }));
+      setError('Completa i campi evidenziati in rosso.');
       return;
     }
 
@@ -109,6 +111,7 @@ export default function ReportForm() {
     setSuccess(null);
     setError('');
     setCopied(false);
+    setTouched({});
   };
 
   const handleCopy = async () => {
@@ -131,6 +134,12 @@ export default function ReportForm() {
     impact: fields.impact || '...',
     details: fields.details || '',
   });
+  const invalidCategory = !form.category;
+  const invalidIssue = fields.issue.trim().length < 5;
+  const invalidTimeframe = fields.timeframe.trim().length < 3;
+  const invalidImpact = fields.impact.trim().length < 3;
+  const invalidLocation = !Number.isFinite(form.lat) || !Number.isFinite(form.lng);
+  const showError = (key, invalid) => touched[key] && invalid;
 
   return (
     <div className="report-card">
@@ -141,7 +150,7 @@ export default function ReportForm() {
       <form className="report-form" onSubmit={handleSubmit}>
         <div>
           <label>Categoria</label>
-          <div className="category-grid">
+          <div className={`category-grid ${showError('category', invalidCategory) ? 'field-error' : ''}`}>
             {CATEGORIES.map((category) => (
               <label
                 key={category.id}
@@ -160,6 +169,9 @@ export default function ReportForm() {
             ))}
           </div>
           {categoryHint && <span className="helper">{categoryHint}</span>}
+          {showError('category', invalidCategory) && (
+            <span className="error-hint">Seleziona una categoria.</span>
+          )}
         </div>
 
         <div className="form-row">
@@ -172,8 +184,12 @@ export default function ReportForm() {
                 type="text"
                 placeholder={issuePlaceholder}
                 value={fields.issue}
+                className={showError('issue', invalidIssue) ? 'input-error' : ''}
                 onChange={handleGuidedField('issue')}
               />
+              {showError('issue', invalidIssue) && (
+                <span className="error-hint">Descrivi cosa succede (min 5 caratteri).</span>
+              )}
             </div>
             <div className="form-row">
               <label htmlFor="timeframe">Da quanto tempo</label>
@@ -182,8 +198,12 @@ export default function ReportForm() {
                 type="text"
                 placeholder="Es. da ieri, da 2 settimane"
                 value={fields.timeframe}
+                className={showError('timeframe', invalidTimeframe) ? 'input-error' : ''}
                 onChange={handleGuidedField('timeframe')}
               />
+              {showError('timeframe', invalidTimeframe) && (
+                <span className="error-hint">Indica da quanto tempo.</span>
+              )}
             </div>
             <div className="form-row">
               <label htmlFor="impact">Rischi o impatto</label>
@@ -192,8 +212,12 @@ export default function ReportForm() {
                 type="text"
                 placeholder="Es. pericolo per pedoni, traffico rallentato"
                 value={fields.impact}
+                className={showError('impact', invalidImpact) ? 'input-error' : ''}
                 onChange={handleGuidedField('impact')}
               />
+              {showError('impact', invalidImpact) && (
+                <span className="error-hint">Indica rischi o impatto.</span>
+              )}
             </div>
             <div className="form-row">
               <label htmlFor="details">Dettagli aggiuntivi (opzionale)</label>
@@ -260,15 +284,20 @@ export default function ReportForm() {
 
         <div>
           <label>Posizione</label>
-          <MapPicker
-            lat={form.lat}
-            lng={form.lng}
-            onChange={(coords) => setForm((prev) => ({ ...prev, ...coords }))}
-          />
+          <div className={showError('location', invalidLocation) ? 'field-error' : ''}>
+            <MapPicker
+              lat={form.lat}
+              lng={form.lng}
+              onChange={(coords) => setForm((prev) => ({ ...prev, ...coords }))}
+            />
+          </div>
           <div className="status-line">
             <span>Lat: {Number.isFinite(form.lat) ? form.lat.toFixed(6) : '--'}</span>
             <span>Lng: {Number.isFinite(form.lng) ? form.lng.toFixed(6) : '--'}</span>
           </div>
+          {showError('location', invalidLocation) && (
+            <span className="error-hint">Seleziona un punto sulla mappa o usa la geolocalizzazione.</span>
+          )}
         </div>
 
         <div>

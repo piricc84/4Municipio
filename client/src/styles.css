@@ -407,6 +407,24 @@ textarea {
   font-weight: 600;
 }
 
+.error-hint {
+  display: block;
+  margin-top: 6px;
+  color: #b00020;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.input-error {
+  border-color: rgba(176, 0, 32, 0.6);
+  box-shadow: 0 0 0 3px rgba(176, 0, 32, 0.12);
+}
+
+.field-error .map-wrap,
+.field-error .category-card {
+  border-color: rgba(176, 0, 32, 0.6);
+}
+
 .success-panel {
   margin-top: 20px;
   padding: 18px;
