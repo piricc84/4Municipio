@@ -1,4 +1,6 @@
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const runtimeApi =
+  typeof window !== 'undefined' && window.__API_URL__ ? window.__API_URL__ : '';
+const API_BASE = runtimeApi || import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 async function handleResponse(response) {
   if (!response.ok) {
