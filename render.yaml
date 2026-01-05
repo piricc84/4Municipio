@@ -13,7 +13,3 @@ services:
         value: consigliere
       - key: ADMIN_PASS
         value: BariLoseto2025!
-    disk:
-      name: bari-loseto-data
-      mountPath: /opt/render/project/src/server/data
-      sizeGB: 1
