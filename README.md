@@ -4,6 +4,9 @@ Portale PWA per segnalazioni civiche del Municipio Bari - Loseto.
 Le segnalazioni vengono salvate a database e poi inviate via WhatsApp con un
 messaggio precompilato (click to chat).
 
+## Apri il portale
+https://piricc84.github.io/4Municipio/
+
 ## Funzionalita
 - Segnalazioni con foto, categoria, descrizione, indirizzo e geotag
 - Mappa OpenStreetMap con scelta punto e geolocalizzazione
