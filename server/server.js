@@ -84,7 +84,7 @@ const attachReportId = (req, res, next) => {
 };
 
 app.post('/api/reports', attachReportId, upload.single('photo'), (req, res) => {
-  const { category, description, address, lat, lng } = req.body;
+  const { category, description, address, lat, lng, reporterFirstName, reporterLastName } = req.body;
   if (!category || !description) {
     return res.status(400).json({ error: 'category and description are required' });
   }
@@ -106,6 +106,8 @@ app.post('/api/reports', attachReportId, upload.single('photo'), (req, res) => {
     lat: parsedLat,
     lng: parsedLng,
     photo_path: req.file ? `/uploads/${req.file.filename}` : '',
+    reporter_first_name: reporterFirstName ? String(reporterFirstName).trim() : '',
+    reporter_last_name: reporterLastName ? String(reporterLastName).trim() : '',
     status: 'nuova',
     created_at: new Date().toISOString(),
   };

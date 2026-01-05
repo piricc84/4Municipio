@@ -29,8 +29,10 @@ export function buildWhatsappMessage(report, categoryId) {
     `Mappa: ${mapLink}`,
     `Foto: ${photoValue}`,
     'Richiesta: verifica e intervento.',
-    'Segnalante: cittadino anonimo.',
   ];
+
+  const fullName = `${report.reporter_first_name || ''} ${report.reporter_last_name || ''}`.trim();
+  lines.push(`Segnalante: ${fullName || 'Cittadino anonimo'}.`);
 
   const dateValue = report.created_at || report.createdAt || new Date().toISOString();
   lines.push(`Data: ${new Date(dateValue).toLocaleString('it-IT')}`);

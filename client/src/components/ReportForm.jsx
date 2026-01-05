@@ -8,6 +8,8 @@ const initialState = {
   category: CATEGORIES[0].id,
   address: '',
   whatsapp: '',
+  firstName: '',
+  lastName: '',
   lat: null,
   lng: null,
 };
@@ -81,6 +83,8 @@ export default function ReportForm() {
     data.append('category', form.category);
     data.append('description', description);
     data.append('address', form.address.trim());
+    data.append('reporterFirstName', form.firstName.trim());
+    data.append('reporterLastName', form.lastName.trim());
     if (Number.isFinite(form.lat)) data.append('lat', String(form.lat));
     if (Number.isFinite(form.lng)) data.append('lng', String(form.lng));
     if (photo) data.append('photo', photo);
@@ -225,6 +229,31 @@ export default function ReportForm() {
               placeholder="+39..."
               value={form.whatsapp}
               onChange={handleField('whatsapp')}
+            />
+          </div>
+        </div>
+
+        <div className="form-row split">
+          <div>
+            <label htmlFor="firstName">Nome segnalante (opzionale)</label>
+            <input
+              id="firstName"
+              type="text"
+              name="firstName"
+              placeholder="Nome"
+              value={form.firstName}
+              onChange={handleField('firstName')}
+            />
+          </div>
+          <div>
+            <label htmlFor="lastName">Cognome segnalante (opzionale)</label>
+            <input
+              id="lastName"
+              type="text"
+              name="lastName"
+              placeholder="Cognome"
+              value={form.lastName}
+              onChange={handleField('lastName')}
             />
           </div>
         </div>

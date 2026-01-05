@@ -209,6 +209,11 @@ export default function Dashboard() {
                   Coordinate: {report.lat.toFixed(6)}, {report.lng.toFixed(6)}
                 </span>
               )}
+              {(report.reporter_first_name || report.reporter_last_name) && (
+                <span>
+                  Segnalante: {[report.reporter_first_name, report.reporter_last_name].filter(Boolean).join(' ')}
+                </span>
+              )}
             </div>
             <div className="report-links">
               {report.photoUrl && (

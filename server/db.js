@@ -21,10 +21,20 @@ db.exec(`
     lat REAL,
     lng REAL,
     photo_path TEXT,
+    reporter_first_name TEXT,
+    reporter_last_name TEXT,
     status TEXT NOT NULL,
     created_at TEXT NOT NULL
   );
 `);
+
+const columns = db.prepare('PRAGMA table_info(reports)').all().map((col) => col.name);
+if (!columns.includes('reporter_first_name')) {
+  db.exec('ALTER TABLE reports ADD COLUMN reporter_first_name TEXT');
+}
+if (!columns.includes('reporter_last_name')) {
+  db.exec('ALTER TABLE reports ADD COLUMN reporter_last_name TEXT');
+}
 
 function insertReport(report) {
   const stmt = db.prepare(`
