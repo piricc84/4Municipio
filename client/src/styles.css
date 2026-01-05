@@ -66,6 +66,7 @@ a {
   max-width: 1200px;
   margin: 0 auto;
   padding: 24px;
+  padding-bottom: 90px;
 }
 
 .topbar {
@@ -319,6 +320,45 @@ a {
   gap: 12px;
 }
 
+.stepper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin: 16px 0 20px;
+}
+
+.step {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 10px 12px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.step.active {
+  border-color: var(--accent-3);
+  box-shadow: var(--shadow-soft);
+  background: #fdf6ef;
+}
+
+.step-index {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  background: rgba(11, 34, 54, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.step-label {
+  font-weight: 600;
+}
+
 .form-row {
   display: grid;
   gap: 12px;
@@ -437,6 +477,20 @@ textarea {
 
 .success-panel textarea {
   min-height: 140px;
+}
+
+.photo-preview {
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.photo-preview img {
+  width: 100%;
+  max-height: 260px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid var(--line);
 }
 
 .info-grid {
@@ -568,6 +622,64 @@ textarea {
   font-size: 0.9rem;
 }
 
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 34, 54, 0.55);
+  display: grid;
+  place-items: center;
+  z-index: 100;
+  padding: 20px;
+}
+
+.modal-content {
+  width: min(900px, 100%);
+  background: #fff;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.mobile-bar {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(11, 34, 54, 0.12);
+  border-radius: 18px;
+  padding: 10px;
+  display: none;
+  gap: 10px;
+  z-index: 90;
+  box-shadow: var(--shadow-soft);
+}
+
+.mobile-bar .button {
+  flex: 1;
+}
+
+.toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(11, 34, 54, 0.95);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  z-index: 95;
+}
+
 @media (min-width: 900px) {
   .hero {
     grid-template-columns: 1.2fr 0.8fr;
@@ -592,5 +704,13 @@ textarea {
 
   .hero h1 {
     font-size: 2rem;
+  }
+
+  .mobile-bar {
+    display: flex;
+  }
+
+  .stepper {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   }
 }
